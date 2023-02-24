@@ -3,12 +3,11 @@ package com.santiago.heroes.model.findheroe;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 
 public class FindHeroe_IN {
 
-    @NotBlank
+    @NotNull(message = "El ID no puede ser nulo")
     @Getter @Setter
     private Long id;
 }

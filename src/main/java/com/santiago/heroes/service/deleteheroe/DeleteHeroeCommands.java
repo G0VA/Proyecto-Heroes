@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class DeleteHeroeCommands {
 
@@ -20,12 +22,18 @@ public class DeleteHeroeCommands {
     public void execute(DeleteHeroe_IN in) {
         LOGGER.info("INICIO DeleteHeroe");
         if (in.getId() == null) {
-            LOGGER.info("ERROR, se debe indicar el ID del Heroe a borrar");
+            LOGGER.error("ERROR -> El ID del heroe a eliminar no puede ser nulo");
+            //throw new IllegalArgumentException("El ID del heroe a eliminar no puede ser nulo");
+        }
+
+        Optional<Heroe> heroe = heroeRepository.find(in.getId());
+        if (heroe.isEmpty()){
+            LOGGER.error("ERROR -> No existe Heroe con el ID: " + in.getId());
+            //throw new NoSuchElementException("El Heroe a eliminar no existe");
         }
 
         LOGGER.info("Se borra el Heroe con ID: " + in.getId());
-        Heroe Heroe = heroeRepository.find(in.getId());
-        heroeRepository.delete(Heroe);
+        heroeRepository.delete(heroe.get());
         LOGGER.info("Heroe borrado correctamente");
 
         LOGGER.info("FIN DeleteHeroe");

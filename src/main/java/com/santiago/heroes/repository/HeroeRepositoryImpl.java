@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class HeroeRepositoryImpl implements HeroeRepository{
@@ -44,7 +45,17 @@ public class HeroeRepositoryImpl implements HeroeRepository{
     }
 
     @Override
-    public Heroe find(Long id) {
-        return entityManager.find(Heroe.class, id);
+    public Optional<Heroe> find(Long id) {
+        return Optional.ofNullable(entityManager.find(Heroe.class, id));
+    }
+
+    @Override
+    public boolean exists(String nombre) {
+        String query = "FROM Heroe WHERE UPPER(NOMBRE) = :nombre";
+        List<Heroe> resQuery = entityManager.createQuery(query)
+                .setParameter("nombre", nombre.toUpperCase())
+                .getResultList();
+
+        return !resQuery.isEmpty();
     }
 }

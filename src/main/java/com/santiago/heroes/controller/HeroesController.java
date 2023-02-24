@@ -16,10 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping(value = "heroes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class HeroesController {
-
 
     @Autowired
     private HeroesService heroesService;
@@ -38,14 +38,17 @@ public class HeroesController {
     public ResponseEntity<Void> deleteHeroe(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "ID del Heroe a eliminar")
             @RequestBody DeleteHeroe_IN in) {
+
         heroesService.deleteHeroe(in);
         return new ResponseEntity<Void>( HttpStatus.OK );
     }
 
     @Operation(summary = "Busca un Heroe")
     @GetMapping(value = "/findHeroe")
-    public ResponseEntity<FindHeroe_OUT> findHeroe(@Parameter(description = "ID del Heroe a buscar")
+    public ResponseEntity<FindHeroe_OUT> findHeroe(
+            @Parameter(description = "ID del Heroe a buscar")
             @RequestBody FindHeroe_IN in) {
+
         FindHeroe_OUT out = heroesService.findHeroe(in);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -67,6 +70,7 @@ public class HeroesController {
     public ResponseEntity<Void> modifyHeroe(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Datos del Heroe a modificar")
             @RequestBody ModifyHeroe_IN in) {
+
         heroesService.modifyHeroe(in);
         return new ResponseEntity<Void>( HttpStatus.OK );
     }

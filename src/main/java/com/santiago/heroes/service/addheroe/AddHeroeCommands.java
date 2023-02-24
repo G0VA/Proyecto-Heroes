@@ -20,6 +20,15 @@ public class AddHeroeCommands {
     public void execute(AddHeroe_IN in) {
         LOGGER.info("INICIO AddHeroe");
 
+        if (in.getNombre() == null || in.getNombre().isEmpty()) {
+            LOGGER.error("ERROR -> El nombre no puede ser nulo o vacio");
+            //throw new IllegalArgumentException("El nombre no puede ser nulo o vacio");
+        }
+
+        if (heroeRepository.exists(in.getNombre())){
+            LOGGER.error("ERROR -> El Heroe " + in.getNombre().toUpperCase() + " ya existe");
+            //throw new DuplicateKeyException("El Heroe ya existe");
+        }
         Heroe heroe = new Heroe();
         heroe.setGrupo(in.getGrupo());
         heroe.setNombre(in.getNombre());
