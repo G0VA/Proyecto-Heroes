@@ -28,13 +28,13 @@ public class HeroesController {
         return new ResponseEntity<Void>( HttpStatus.OK );
     }
 
-    @PostMapping(value = "/deleteHeroe")
+    @DeleteMapping(value = "/deleteHeroe")
     public ResponseEntity<Void> deleteHeroe(@RequestBody DeleteHeroe_IN in) {
         heroesService.deleteHeroe(in);
         return new ResponseEntity<Void>( HttpStatus.OK );
     }
 
-    @PostMapping(value = "/findHeroe")
+    @GetMapping(value = "/findHeroe")
     public ResponseEntity<FindHeroe_OUT> findHeroe(@RequestBody FindHeroe_IN in) {
         FindHeroe_OUT out = heroesService.findHeroe(in);
         return ResponseEntity
@@ -42,7 +42,7 @@ public class HeroesController {
                 .body(out);
     }
 
-    @PostMapping(value = "/listHeroes")
+    @GetMapping(value = "/listHeroes")
     public ResponseEntity<ListHeroes_OUT> listHeroes(@RequestBody ListHeroes_IN in) {
         ListHeroes_OUT out = heroesService.listHeroes(in);
         return ResponseEntity
@@ -50,7 +50,7 @@ public class HeroesController {
                 .body(out);
     }
 
-    @PostMapping(value = "/modifyHeroe")
+    @PutMapping(value = "/modifyHeroe")
     public ResponseEntity<Void> modifyHeroe(@RequestBody ModifyHeroe_IN in) {
         heroesService.modifyHeroe(in);
         return new ResponseEntity<Void>( HttpStatus.OK );
