@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,12 +23,12 @@ public class AddHeroeCommands {
 
         if (in.getNombre() == null || in.getNombre().isEmpty()) {
             LOGGER.error("ERROR -> El nombre no puede ser nulo o vacio");
-            //throw new IllegalArgumentException("El nombre no puede ser nulo o vacio");
+            throw new IllegalArgumentException("El nombre no puede ser nulo o vacio");
         }
 
         if (heroeRepository.exists(in.getNombre())){
             LOGGER.error("ERROR -> El Heroe " + in.getNombre().toUpperCase() + " ya existe");
-            //throw new DuplicateKeyException("El Heroe ya existe");
+            throw new DuplicateKeyException("El Heroe ya existe");
         }
         Heroe heroe = new Heroe();
         heroe.setGrupo(in.getGrupo());

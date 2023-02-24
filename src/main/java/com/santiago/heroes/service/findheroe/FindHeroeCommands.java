@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Component
@@ -24,14 +25,14 @@ public class FindHeroeCommands {
 
         if (in.getId() == null) {
             LOGGER.error("ERROR -> El ID del heroe a buscar no puede ser nulo");
-            //throw new IllegalArgumentException("El ID del heroe a buscar no puede ser nulo");
+            throw new IllegalArgumentException("El ID del heroe a buscar no puede ser nulo");
         }
 
         LOGGER.info("Se busca el Heroe con ID: " + in.getId());
         Optional<Heroe> heroe = heroeRepository.find(in.getId());
         if (heroe.isEmpty()){
             LOGGER.error("ERROR -> No existe Heroe con el ID: " + in.getId());
-            //throw new NoSuchElementException("El Heroe no existe");
+            throw new NoSuchElementException("El Heroe no existe");
         }
 
         LOGGER.info("Encontrado el Heroe");

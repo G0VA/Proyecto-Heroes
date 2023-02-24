@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Component
@@ -26,13 +27,13 @@ public class ModifyHeroesCommands {
         LOGGER.info("INICIO ModifyHeroe");
         if (in.getHeroe() == null || in.getHeroe().getId() == null) {
             LOGGER.error("ERROR -> El ID del heroe a modificar no puede ser nulo");
-            //throw new IllegalArgumentException("El ID del heroe a modificar no puede ser nulo");
+            throw new IllegalArgumentException("El ID del heroe a modificar no puede ser nulo");
         }
 
         Optional<Heroe> heroe = heroeRepository.find(in.getHeroe().getId());
         if (heroe.isEmpty()){
             LOGGER.error("ERROR -> No existe Heroe con el ID: " + in.getHeroe().getId());
-            //throw new NoSuchElementException("El Heroe a modificar no existe");
+            throw new NoSuchElementException("El Heroe a modificar no existe");
         }
         Heroe heroeModify = heroe.get();
 
