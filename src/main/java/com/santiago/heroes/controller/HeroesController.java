@@ -34,7 +34,7 @@ public class HeroesController {
     }
 
     @Operation(summary = "Elimina un Heroe")
-    @DeleteMapping(value = "/deleteHeroe")
+    @PostMapping(value = "/deleteHeroe")
     public ResponseEntity<Void> deleteHeroe(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "ID del Heroe a eliminar")
             @RequestBody DeleteHeroe_IN in) {
@@ -44,7 +44,7 @@ public class HeroesController {
     }
 
     @Operation(summary = "Busca un Heroe")
-    @GetMapping(value = "/findHeroe")
+    @PostMapping(value = "/findHeroe")
     public ResponseEntity<FindHeroe_OUT> findHeroe(
             @Parameter(description = "ID del Heroe a buscar")
             @RequestBody FindHeroe_IN in) {
@@ -56,7 +56,7 @@ public class HeroesController {
     }
 
     @Operation(summary = "Busca Heroes. Si se le pasa texto busca heroes con dicho texto")
-    @GetMapping(value = "/listHeroes")
+    @PostMapping(value = "/listHeroes")
     public ResponseEntity<ListHeroes_OUT> listHeroes(@Parameter(description = "Texto a buscar en el nombre de los heroes")
             @RequestBody ListHeroes_IN in) {
         ListHeroes_OUT out = heroesService.listHeroes(in);
@@ -66,7 +66,7 @@ public class HeroesController {
     }
 
     @Operation(summary = "Modifica un Heroe")
-    @PutMapping(value = "/modifyHeroe")
+    @PostMapping(value = "/modifyHeroe")
     public ResponseEntity<Void> modifyHeroe(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Datos del Heroe a modificar")
             @RequestBody ModifyHeroe_IN in) {
