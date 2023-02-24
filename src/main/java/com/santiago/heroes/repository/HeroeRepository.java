@@ -3,6 +3,7 @@ package com.santiago.heroes.repository;
 import com.santiago.heroes.repository.dto.Heroe;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface HeroeRepository {
 
@@ -16,5 +17,7 @@ public interface HeroeRepository {
 
     void modify(Heroe heroe);
 
-    Heroe find(Long id);
+    Optional<Heroe> find(Long id);
+
+    boolean exists(String nombre);
 }

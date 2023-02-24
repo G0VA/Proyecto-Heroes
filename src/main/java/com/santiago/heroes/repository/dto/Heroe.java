@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "heroes")
@@ -16,7 +17,8 @@ public class Heroe {
     @Getter @Setter @Column(name = "id")
     private Long id;
 
-    @Getter @Setter @Column(name = "nombre", unique=true, nullable=false)
+    @Getter @Setter @NotNull
+    @Column(name = "nombre", unique=true, nullable=false)
     private String nombre;
 
     @Getter @Setter @Column(name = "grupo")
