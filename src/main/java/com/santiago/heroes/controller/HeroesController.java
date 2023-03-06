@@ -3,8 +3,9 @@ package com.santiago.heroes.controller;
 import com.santiago.heroes.model.addheroe.AddHeroe_IN;
 import com.santiago.heroes.model.deleteheroe.DeleteHeroe_IN;
 import com.santiago.heroes.model.findheroe.FindHeroe_IN;
-import com.santiago.heroes.model.listheroes.ListHeroes_IN;
 import com.santiago.heroes.model.listheroes.ListHeroes_OUT;
+import com.santiago.heroes.model.listheroesbyname.ListHeroesByName_IN;
+import com.santiago.heroes.model.listheroesbyname.ListHeroesByName_OUT;
 import com.santiago.heroes.model.modifyheroe.ModifyHeroe_IN;
 import com.santiago.heroes.service.HeroesService;
 import com.santiago.heroes.model.findheroe.FindHeroe_OUT;
@@ -39,7 +40,7 @@ public class HeroesController {
     @Operation(summary = "Elimina un Heroe")
     @PostMapping(value = "/deleteHeroe")
     public ResponseEntity<Void> deleteHeroe(@Valid
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "ID del Heroe a eliminar")
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "NOMBRE del Heroe a eliminar")
             @RequestBody DeleteHeroe_IN in, BindingResult result) {
 
         heroesService.deleteHeroe(in);
@@ -58,11 +59,20 @@ public class HeroesController {
                 .body(out);
     }
 
-    @Operation(summary = "Busca Heroes. Si se le pasa texto busca heroes con dicho texto")
+    @Operation(summary = "Busca todos los Heroes")
     @PostMapping(value = "/listHeroes")
-    public ResponseEntity<ListHeroes_OUT> listHeroes(@Parameter(description = "Texto a buscar en el nombre de los heroes")
-            @RequestBody ListHeroes_IN in) {
-        ListHeroes_OUT out = heroesService.listHeroes(in);
+    public ResponseEntity<ListHeroes_OUT> listHeroes() {
+        ListHeroes_OUT out = heroesService.listHeroes();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(out);
+    }
+
+    @Operation(summary = "Busca Heroes por patron")
+    @PostMapping(value = "/listHeroesByName")
+    public ResponseEntity<ListHeroesByName_OUT> listHeroesByName(@Parameter(description = "Patron a buscar en el nombre de los heroes")
+            @RequestBody ListHeroesByName_IN in) {
+        ListHeroesByName_OUT out = heroesService.listHeroesByName(in);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(out);

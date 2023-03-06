@@ -22,19 +22,19 @@ public class DeleteHeroeCommands {
 
     public void execute(DeleteHeroe_IN in) {
         LOGGER.info("INICIO DeleteHeroe");
-        if (in.getId() == null) {
-            LOGGER.error("ERROR -> El ID del heroe a eliminar no puede ser nulo");
-            throw new IllegalArgumentException("El ID del heroe a eliminar no puede ser nulo");
+        if (in.getNombre() == null  || in.getNombre().isEmpty()) {
+            LOGGER.error("ERROR -> El NOMBRE del heroe a eliminar no puede ser nulo o vacio");
+            throw new IllegalArgumentException("El NOMBRE del heroe a eliminar no puede ser nulo o vacio");
         }
 
-        Optional<Heroe> heroe = heroeRepository.find(in.getId());
-        if (heroe.isEmpty()){
-            LOGGER.error("ERROR -> No existe Heroe con el ID: " + in.getId());
-            throw new NoSuchElementException("El Heroe a eliminar no existe");
+        Optional<Heroe> opHeroe = heroeRepository.getHeroeByName(in.getNombre());
+        if (opHeroe.isEmpty()) {
+            LOGGER.error("ERROR -> El Heroe " + in.getNombre().toUpperCase() + " no existe");
+            throw new NoSuchElementException("El Heroe no existe");
         }
 
-        LOGGER.info("Se borra el Heroe con ID: " + in.getId());
-        heroeRepository.delete(heroe.get());
+        LOGGER.info("Se borra el Heroe : " + in.getNombre());
+        heroeRepository.delete(opHeroe.get());
         LOGGER.info("Heroe borrado correctamente");
 
         LOGGER.info("FIN DeleteHeroe");

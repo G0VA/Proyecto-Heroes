@@ -4,6 +4,7 @@ import com.santiago.heroes.service.addheroe.AddHeroeCommands;
 import com.santiago.heroes.service.deleteheroe.DeleteHeroeCommands;
 import com.santiago.heroes.service.findheroe.FindHeroeCommands;
 import com.santiago.heroes.service.listheroes.ListHeroesCommands;
+import com.santiago.heroes.service.listheroesbyname.ListHeroesByNameCommands;
 import com.santiago.heroes.service.modifyheroe.ModifyHeroesCommands;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,9 @@ public class HeroesCommands {
     @Autowired
     private ModifyHeroesCommands modifyHeroesCommands;
 
+    @Autowired
+    private ListHeroesByNameCommands listHeroesByNameCommands;
+
     public AddHeroeCommands addHeroeCommands() {
         return addHeroeCommands;
     }
@@ -46,4 +50,5 @@ public class HeroesCommands {
         return modifyHeroesCommands;
     }
 
+    public ListHeroesByNameCommands listHeroesByNameCommands() {return listHeroesByNameCommands; }
 }
