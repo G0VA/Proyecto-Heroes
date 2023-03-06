@@ -29,15 +29,15 @@ public class FindHeroeCommands {
         }
 
         LOGGER.info("Se busca el Heroe con ID: " + in.getId());
-        Optional<Heroe> heroe = heroeRepository.find(in.getId());
-        if (heroe.isEmpty()){
+        Optional<Heroe> opHeroe = heroeRepository.findById(in.getId());
+        if (opHeroe.isEmpty()){
             LOGGER.error("ERROR -> No existe Heroe con el ID: " + in.getId());
             throw new NoSuchElementException("El Heroe no existe");
         }
 
         LOGGER.info("Encontrado el Heroe");
         FindHeroe_OUT findHeroeOut = new FindHeroe_OUT();
-        findHeroeOut.setHeroe(heroe.get());
+        findHeroeOut.setHeroe(opHeroe.get());
 
         LOGGER.info("FIN FindHeroe");
         return findHeroeOut;

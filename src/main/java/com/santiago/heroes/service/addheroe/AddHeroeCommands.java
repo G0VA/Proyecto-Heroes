@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class AddHeroeCommands {
 
@@ -26,16 +28,17 @@ public class AddHeroeCommands {
             throw new IllegalArgumentException("El nombre no puede ser nulo o vacio");
         }
 
-        if (heroeRepository.exists(in.getNombre())){
+        Optional<Heroe> opHeroe = heroeRepository.getHeroeByName(in.getNombre());
+        if (opHeroe.isPresent()) {
             LOGGER.error("ERROR -> El Heroe " + in.getNombre().toUpperCase() + " ya existe");
             throw new DuplicateKeyException("El Heroe ya existe");
         }
         Heroe heroe = new Heroe();
-        heroe.setGrupo(in.getGrupo());
-        heroe.setNombre(in.getNombre());
+        heroe.setGrupo(in.getGrupo().toUpperCase());
+        heroe.setNombre(in.getNombre().toUpperCase());
 
         LOGGER.info("Se va a insertar el heroe: " + in.getNombre());
-        heroeRepository.add(heroe);
+        heroeRepository.save(heroe);
         LOGGER.info("Insertado heroe correctamente");
 
         LOGGER.info("FIN AddHeroe");

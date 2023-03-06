@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 public class DeleteHeroe_IN {
 
-    @NotNull(message = "El ID no puede ser nulo")
+    @NotNull(message = "El NOMBRE no puede ser nulo")
     @Getter @Setter
-    private Long id;
+    private String nombre;
 }

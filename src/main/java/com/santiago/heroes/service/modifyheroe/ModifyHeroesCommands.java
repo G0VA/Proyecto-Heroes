@@ -30,20 +30,23 @@ public class ModifyHeroesCommands {
             throw new IllegalArgumentException("El ID del heroe a modificar no puede ser nulo");
         }
 
-        Optional<Heroe> heroe = heroeRepository.find(in.getHeroe().getId());
-        if (heroe.isEmpty()){
+        if (in.getHeroe().getNombre() == null || in.getHeroe().getNombre().isEmpty()) {
+            LOGGER.error("ERROR -> El NOMBRE del heroe a modificar no puede ser nulo o vacio");
+            throw new IllegalArgumentException("El NOMBRE del heroe a modificar no puede ser nulo o vacio");
+        }
+
+        Optional<Heroe> heroe = heroeRepository.findById(in.getHeroe().getId());
+
+        if (heroe.isEmpty()) {
             LOGGER.error("ERROR -> No existe Heroe con el ID: " + in.getHeroe().getId());
             throw new NoSuchElementException("El Heroe a modificar no existe");
         }
         Heroe heroeModify = heroe.get();
-
-        heroeModify.setNombre(in.getHeroe().getNombre());
-        heroeModify.setGrupo(in.getHeroe().getGrupo());
+        heroeModify.setNombre(in.getHeroe().getNombre().toUpperCase());
+        heroeModify.setGrupo(in.getHeroe().getGrupo().toUpperCase());
         LOGGER.info("Se modifica el Heroe con ID: " + in.getHeroe().getId());
-        heroeRepository.modify(heroeModify);
+        heroeRepository.save(heroeModify);
         LOGGER.info("Heroe modificado correctamente");
-
         LOGGER.info("FIN ModifyHeroe");
-
     }
 }

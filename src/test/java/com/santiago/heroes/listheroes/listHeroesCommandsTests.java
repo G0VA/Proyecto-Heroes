@@ -1,41 +1,61 @@
 package com.santiago.heroes.listheroes;
 
-import com.santiago.heroes.model.listheroes.ListHeroes_IN;
-import com.santiago.heroes.model.listheroes.ListHeroes_OUT;
-import com.santiago.heroes.repository.HeroeRepository;
-import com.santiago.heroes.repository.dto.Heroe;
-import com.santiago.heroes.service.listheroes.ListHeroesCommands;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.santiago.heroes.model.listheroesbyname.ListHeroesByName_IN;
+import com.santiago.heroes.model.listheroesbyname.ListHeroesByName_OUT;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-@RunWith(MockitoJUnitRunner.class)
+
+@WebAppConfiguration
+@SpringBootTest
 public class listHeroesCommandsTests {
+    private MockMvc mockMvc;
 
-    @InjectMocks
-    private ListHeroesCommands listHeroesCommands = new ListHeroesCommands();
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
-    @Mock
-    private HeroeRepository heroeRepository;
+    private static final String URI = "/heroes/listHeroesByName";
+
+    @BeforeEach
+    void init() throws Exception {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+    }
+
+    /*
+    Test que hace la peticion /heroes/listHeroesByName con el patron "MAN"
+    -Debe devolver 3 ya que es el resultado de los Heroes que contienen "MAN" en su nombre. Esto se genera al iniciar con
+        el data.sql alojado en la carpeta resources.
+     */
 
     @Test
-    public void testListHeroesText() {
-        ListHeroes_IN in = new ListHeroes_IN();
+    void test_1() throws Exception {
+        ListHeroesByName_IN in = new ListHeroesByName_IN();
+        in.setPatron("MAN");
 
-        List<Heroe> listHeroesByText = new ArrayList<>();
-        Heroe heroe = new Heroe();
-        heroe.setId(40L);
-        heroe.setNombre("HOMBREMAN");
-        heroe.setGrupo("TEST");
-        listHeroesByText.add(heroe);
-        Mockito.when(heroeRepository.getHeroes()).thenReturn(listHeroesByText);
+        ObjectMapper mapper = new ObjectMapper();
 
-        ListHeroes_OUT out = listHeroesCommands.execute(in);
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(URI)
+                .content(mapper.writeValueAsString(in))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(print());
+
+        ListHeroesByName_OUT out = mapper.readValue(resultActions.andReturn().getResponse().getContentAsString(), ListHeroesByName_OUT.class);
+
+        assertEquals(3, out.getHeroes().size());
     }
 }
